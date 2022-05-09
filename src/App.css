@@ -1,0 +1,157 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+button {
+  font-size: calc(10px + 2vmin);
+}
+
+
+.customers-page{
+  height: 100%;
+  width: 100vw;
+  position: absolute;
+  overflow: auto;
+  /* background-color: #282c34; */
+}
+
+.floating-input>input::placeholder {
+  color: transparent;
+}
+
+.floating-input>input:focus,
+.floating-input>input:not(:placeholder-shown) { 
+@apply pt-8
+}
+
+.floating-input>input:focus~label, 
+.floating-input>input:not(:placeholder-shown)~label {
+@apply opacity-75 scale-75 -translate-y-3 translate-x-1; 
+}
+
+.right-side-bar{
+   width: 100%;
+   /* background-color: red; */
+   height: 100%;
+   float: right;
+}
+
+.left-side-bars{
+  width: 18.5%;
+  height: 100%;
+  float: left;
+}
+
+.logo{
+  width: 150px;
+  height: 70px;
+}
+
+.navbarcont{
+  height: 80px;
+  background-color: #ffff;
+  width: 100%;
+  top: 0px;
+  z-index: 100;
+}
+
+.moto-image{
+  width: 100%;
+  height: 250px;
+}
+
+.moto-image>img{
+  width: 50%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.box{
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: darkcyan;
+}
+
+.list-s{
+  position: relative;
+  top: -5px;
+  left: 20px;
+}
+
+.left-bar{
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  overflow: hidden;
+  /* background-color: rgb(0,0,0);
+  background-color: rgba(0, 0, 0, 0.63); */
+  z-index: 2 !important;
+  display: none;
+}
+
+.min-bar{
+  background-color: white;
+  float: right;
+  width: 50%;
+  height: 70%;
+  padding-top: 150px;
+  border: 1px solid lavender;
+  border-radius: 10px;
+}
+
+
+.links{
+  padding: 5px;
+}
+
+.sl-cont{
+  z-index: 1 !important;
+}
+
+.form-cont-c{
+  width: 40%;
+}
+
+@media screen and (max-width: 650px) {
+  .form-cont-c{
+    width: 90% !important;
+  }
+}
