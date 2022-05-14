@@ -17,9 +17,11 @@ const Customers = () => {
   const navigate = useNavigate();
     const [allDistricts, setAllDistricts] = useState([])
     const [allSectors, setAllSectors] = useState([])
+    const [allProducts, setAllProducts]= useState([])
 
 useEffect(()=>{
     setAllDistricts(Districts());
+    getProductsId();
 },[])
 
 const getSectors =()=>{
@@ -40,6 +42,8 @@ const [email, SetEmail] = useState(null);
 const [secretPin, SetPin] = useState(null);
 const [district, SetDist] = useState(null);
 const [sector, SetSector] = useState(null);
+const [id, SetId] = useState(null);
+
 const [phone, SetPhone] = useState(null);
 const [disabled, setDisabled]= useState(false);
 
@@ -47,7 +51,7 @@ const registerCustomer = async(e)=>{
    try{
     e.preventDefault();
 
-    if(names && email && secretPin && district && sector && phone){
+    if(names && email && secretPin && district && sector && phone && id){
       setDisabled(true)
         let res = await axiosInstance.post("/customers/register", {
            username: names,
@@ -55,7 +59,8 @@ const registerCustomer = async(e)=>{
            secretPin: secretPin,
            district: district,
            sector: sector,
-           telephone: phone
+           telephone: phone,
+           gateIds: id
          });
  
           setDisabled(false)
@@ -80,6 +85,18 @@ const registerCustomer = async(e)=>{
     setDisabled(false)
        console.log(error)
    }
+}
+
+const getProductsId = async(e)=>{
+  try{
+       let res = await axiosInstance.get("/customers/allProducts");
+       console.log(res.data)
+       setAllProducts(res.data);
+  }
+  catch(error)
+  {
+      console.log(error)
+  }
 }
 
   return (
@@ -168,7 +185,7 @@ const registerCustomer = async(e)=>{
                 </select>
           </div>
 
-          <div className="floating-input mb-7 relative">
+          <div className="floating-input mb-5 relative">
             <select
               required
               className="border border-gray-200 focus:outline-none rounded-md focus:border-gray-500 focus:shadow-sm w-full p-3 h-14"
@@ -182,8 +199,28 @@ const registerCustomer = async(e)=>{
   }
                 </select>
           </div>
+
+          <div className="floating-input mb-7 relative">
+            <select
+            id="ids"
+            required
+            onChange={(val)=>SetId(val.target.value)}
+              className="border border-gray-200 focus:outline-none rounded-md focus:border-gray-500 focus:shadow-sm w-full p-3 h-14"
+              
+            >
+                <option disabled selected>Select Gate Opener Id</option>
+                {
+                  allProducts?.map((i)=>(
+                  !i?.status ?
+          <option value={i?.gateId}>{i?.gateId}</option>
+          :
+          <></>
+                  ))
+                }
+                </select>
+          </div>
   
-          <div className="my-6">
+          <div className="my-6 mb-17">
             <button
             type="button"
               className="h-14 text-lg w-full px-4 py-2 font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
@@ -192,6 +229,7 @@ const registerCustomer = async(e)=>{
               Continue
             </button>
           </div>
+          <br/>   <br/>   <br/>   <br/>
 
           <div className="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
   id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

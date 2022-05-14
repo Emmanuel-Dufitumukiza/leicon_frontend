@@ -7,6 +7,8 @@ import Home from './Users/Home';
 import Buy from './Users/Buy';
 import MyGate from './Users/MyGate';
 import Login from "./components/Login";
+import AddProduct from './components/AddProduct';
+import Allproducts from "./components/Allproducts";
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/order" element={<Buy />} />
         <Route path="/mygate" element={<MyGate />} />
+        <Route path="/products/add" element={<AddProduct />} />
+        <Route path="/products" element={<Allproducts />} />
       </Routes>
     </BrowserRouter>
   );
