@@ -95,7 +95,7 @@ const NavBar = () => {
                 onClick={mygate}
                 className="py-4 px-6 text-gray-500 font-semibold hover:text-purple-500 transition duration-300"
               >
-                MY SMART GATE
+                MY GATE Opener
               </a>
               <a
                onClick={order}
@@ -130,7 +130,7 @@ const NavBar = () => {
     </div>
 
     <div className="links w-100 mb-3">
-      <button onClick={mygate} className="px-6">My Gate</button>
+      <button onClick={mygate} className="px-6">My GateOpener</button>
     </div>
 
     <div className="links w-100 mb-3">

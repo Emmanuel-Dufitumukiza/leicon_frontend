@@ -41,6 +41,7 @@ const Home = () => {
         emulateTouch={true}
         infiniteLoop={true}
         dynamicHeight={true}
+        autoPlay={true}
       >
         <div>
           <img src={gate} />
@@ -63,7 +64,7 @@ const Home = () => {
         </h3>
 
         <p className="text-center mb-5">
-          Make your gate smart with focus technologies where you open, close,
+          Make your gate smart with Leicon where you open, close,
           lock and unlock your gate using a remote or with your smart phone.
         </p>
 
@@ -72,7 +73,7 @@ const Home = () => {
 
           <div>
             <button onClick={()=>navigate("/order")} className="px-4 py-2 rounded-md bg-teal-500 text-white hover:bg-orangereds mt-16 ml-10">
-              Buy Now
+              Order Now
             </button>
           </div> 
         </div>
@@ -128,6 +129,7 @@ const Home = () => {
         <ReactPlayer url='https://youtu.be/czElAYwMnSo'
              controls={true}
              width="100%"
+             
              />
 
       </div>
