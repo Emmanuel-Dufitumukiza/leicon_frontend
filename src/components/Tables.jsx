@@ -18,10 +18,25 @@ const Tables = () => {
     const [allDistricts, setAllDistricts] = useState([])
     const [allSectors, setAllSectors] = useState([])
     const [allCustomers, setAllCustomers]= useState([])
+    const [allProducts, setAllProducts]= useState([])
+    const [ids, SetId]= useState(null)
 
 useEffect(()=>{
     setAllDistricts(Districts());
+    getProductsId();
 },[])
+
+const getProductsId = async()=>{
+  try{
+       let res = await axiosInstance.get("/customers/allProducts");
+       console.log(res.data)
+       setAllProducts(res.data);
+  }
+  catch(error)
+  {
+      console.log(error)
+  }
+}
 
 const getSectors =()=>{
     let dist = document.getElementById("dist").value;
@@ -64,9 +79,10 @@ const getCustomers = async(e)=>{
 
 const approve = async()=>{
   try{
-    if(secretPin){
+    if(secretPin && ids){
+      alert(ids)
       setDisabled(true)
-      let res = await axiosInstance.patch("/customers/"+currentCustomer?.id, {secretPin: secretPin});
+      let res = await axiosInstance.patch("/customers/"+currentCustomer?.id, {secretPin: secretPin,gateIds: ids});
       document.getElementById("closeModalBtn2").click();
       getCustomers();
       return ;
@@ -124,6 +140,22 @@ const getTime = (sale)=>{
     }
 
     return sendTime;
+}
+
+const [code, setCode] = useState(null);
+
+useEffect(async()=>{
+  await getRemoteCode(currentCustomer?.gateIds);
+},[currentCustomer])
+
+const getRemoteCode = async(gateIds)=>{
+  setCode(null);
+ let res = await axiosInstance.post("/customers/getRemoteCode", {
+    gateIds: gateIds
+  });
+
+  setCode(res.data[0]);
+  return res.data[0];
 }
 
   return (
@@ -324,24 +356,45 @@ const getTime = (sale)=>{
 
           {
            currentCustomer.gateIds ?
+           <>
           <div className="floating-input mb-5 relative">
             <input
               type="text"
               id="password"
               className="border border-gray-200 focus:outline-none rounded-md focus:border-gray-500 focus:shadow-sm w-full p-3 h-14"
-              placeholder="GateID"
+              placeholder="Remote Code"
               autocomplete="off"
               required
               disabled={true}
-              value={currentCustomer.gateIds}
+              value={code}
             />
             <label
               for="password"
               className="absolute top-0 left-0 px-3 py-4 h-full pointer-events-none transform origin-left transition-all duration-100 ease-in-out "
             >
-              GateID
+              Remote Code
             </label>
           </div>
+
+<div className="floating-input mb-5 relative">
+<input
+  type="text"
+  id="password"
+  className="border border-gray-200 focus:outline-none rounded-md focus:border-gray-500 focus:shadow-sm w-full p-3 h-14"
+  placeholder="GateID"
+  autocomplete="off"
+  required
+  disabled={true}
+  value={currentCustomer.gateIds}
+/>
+<label
+  for="password"
+  className="absolute top-0 left-0 px-3 py-4 h-full pointer-events-none transform origin-left transition-all duration-100 ease-in-out "
+>
+  GateID
+</label>
+</div>
+</>
           :
           <></>
 }
@@ -428,6 +481,26 @@ const getTime = (sale)=>{
             >
               Secret Pin
             </label>
+          </div>
+
+          <div className="floating-input mb-7 relative">
+            <select
+            id="ids"
+            required
+            onChange={(val)=>SetId(val.target.value)}
+              className="border border-gray-200 focus:outline-none rounded-md focus:border-gray-500 focus:shadow-sm w-full p-3 h-14"
+              
+            >
+                <option disabled selected>Select Gate Opener Id</option>
+                {
+                  allProducts?.map((i)=>(
+                  !i?.status ?
+          <option value={i?.gateId}>{i?.gateId}</option>
+          :
+          <></>
+                  ))
+                }
+                </select>
           </div>
       </div>
       <div

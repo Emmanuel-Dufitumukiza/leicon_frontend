@@ -5,11 +5,15 @@ import { Provinces, Districts, Sectors, Cells, Villages} from "rwanda";
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import 'tw-elements';
+import { axiosInstance } from '../config';
 
 const MyGate = ()=>{
 
   const [idV, setIdV] = useState(false)
   const [passV, setPassV] = useState(false)
+  const [id, setId] = useState(null);
+  const [pin, setPin] = useState(null);
+  const [error, setError] = useState(null);
 
    const getPin = ()=>{
       if(document.getElementById("pass").type == "text"){
@@ -50,6 +54,35 @@ const getSectors =()=>{
     })
 }
 
+const [data, setData] = useState([]);
+
+const getPassword = async(e)=>{
+  e.preventDefault();
+
+try{
+  if(id && pin){
+    setError(null);
+    setData([]);
+    let res = await axiosInstance.post("/customers/getPassword", 
+    {gateIds: id, secretPin: pin});
+if(res.data[0] == "Incorrect gateId or secretPin"){
+setError(res.data[0]);
+return ;
+}
+  setData(res.data);
+  document.getElementById("openModal").click();
+    return ;
+   }
+ 
+   alert("Complete all fields")
+}
+catch(error){
+  console.log(error);
+  setError(null);
+  alert(error.message)
+}
+}
+
     return(
         <>
         
@@ -71,7 +104,7 @@ const getSectors =()=>{
 
                    <div className="px-10">
             
-                   <form className="w-full">
+                   <form className="w-full" onSubmit={getPassword}>
   <div className="md:flex md:items-center mb-6">
     <div className="w-full">
       <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" for="inline-full-name">
@@ -79,7 +112,9 @@ const getSectors =()=>{
       </label>
     </div>
     <div className="w-full">
-      <input style={{height: "50px"}}  className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="inline-full-name" placeholder='Gate ID' type="text"/>
+      <input style={{height: "50px"}}
+      onKeyUp={(val)=>setId(val.target.value)}
+       required className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="inline-full-name" placeholder='Gate ID' type="text"/>
     </div>
   </div>
   <div className="md:flex md:items-center mb-6">
@@ -89,19 +124,34 @@ const getSectors =()=>{
       </label>
     </div>
     <div className="md:w-2/3">
-      <input style={{height: "50px"}}  className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="inline-password" type="password" placeholder="Secret Pin"/>
+      <input style={{height: "50px"}} 
+      onKeyUp={(val)=>setPin(val.target.value)}
+      required className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="inline-password" type="password" placeholder="Secret Pin"/>
     </div>
   </div>
+
+  {
+                    error?
+                    <div class="bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4" role="alert">
+  {/* <p class="font-bold">Login Error</p> */}
+  <p>{error}</p>
+</div>
+                    :
+                    <></>
+                }
 
   <div className="md:flex md:items-center mt-10">
     <div className=""></div>
     <div className="md:w-2/3">
-      <button className="shadow w-full bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-3 px-4 rounded" type="button"  data-bs-toggle="modal" data-bs-target="#exampleModal">
+      <button className="shadow w-full bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-3 px-4 rounded" type="submit" 
+      //  data-bs-toggle="modal" data-bs-target="#exampleModal"
+       >
       Get Password
       </button>
     </div>
   </div>
 </form>
+<button className="hidden" id="openModal" data-bs-toggle="modal" data-bs-target="#exampleModal">open</button>
                    </div>
 
               </div>
@@ -123,13 +173,13 @@ const getSectors =()=>{
       <div className="modal-body relative p-4">
       <div className="inp mb-3">
         <label htmlFor="" className="fw-bold">Gate Owner</label>
-        <input type="text" value="James Kagabo" className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" disabled />
+        <input type="text" value={data[1]} className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" disabled />
         </div>
 
         <div className="inp mb-3">
         <label htmlFor="" className="fw-bold">Gate ID</label>
         <div className="flex bg-gray-200 border-2 border-gray-200 rounded w-full pr-3">
-        <input type="password" id="id" value="13234pingasabo" className="appearance-none py-2 px-4 w-full text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" disabled />
+        <input type="password" id="id" value={id} className="appearance-none py-2 px-4 w-full text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" disabled />
         <button onClick={getId} className="btn btn shadow-none ms-2 sh">
           {
             idV?
@@ -144,7 +194,7 @@ const getSectors =()=>{
         <div className="inp mb-3">
         <label htmlFor="" className="fw-bold">Gate Password</label>
         <div className="flex bg-gray-200 border-2 border-gray-200 rounded w-full pr-3">
-        <input type="password" id="pass" value="13234pingasabo" className="appearance-none py-2 px-4 w-full text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" disabled />
+        <input type="password" id="pass" value={data[0]} className="appearance-none py-2 px-4 w-full text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" disabled />
         <button onClick={getPin} className="btn btn shadow-none ms-2 sh">
         {
             passV?

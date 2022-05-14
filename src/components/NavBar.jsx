@@ -91,6 +91,13 @@ const NavBar = ()=>{
       <li>
         <a href="/customers/new" class="block px-4 cursor-pointer py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Add Customer</a>
       </li>
+      <li>
+        <a href="/products/add" class="block px-4 cursor-pointer py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Register Product</a>
+      </li>
+
+      <li>
+        <a href="/products" class="block px-4 cursor-pointer py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">All Products</a>
+      </li>
     </ul>
     <div class="py-1">
       <a href="/login" class="block px-4 cursor-pointer py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Sign out</a>
