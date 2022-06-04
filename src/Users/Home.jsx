@@ -41,7 +41,7 @@ const Home = () => {
         emulateTouch={true}
         infiniteLoop={true}
         dynamicHeight={true}
-        autoPlay={true}
+        // autoPlay={true}
       >
         <div>
           <img src={gate} />
