@@ -43,17 +43,26 @@ const Home = () => {
         dynamicHeight={true}
         autoPlay={true}
       >
-        <div>
+        <div className="relative">
           <img src={gate} />
-          <p className="legend">Open with phone</p>
+          {/* <p className="legend text-blue-600">Open with phone</p> */}
+          <div className="absolute top-40 text-center flex items-center justify-center">
+          <h2 className=" text-xl glow text-center">Make Your Gate Smart With Leicon</h2>
+            </div>
         </div>
-        <div>
+        <div className="relative">
           <img src={gate2} />
-          <p className="legend">Smart gate</p>
+          {/* <p className="legend">Smart gate</p> */}
+          <div className="absolute top-24 text-center flex items-center justify-center">
+          <h2 className=" text-xl glow text-center">You Can Order Smart Gate Opener Now</h2>
+            </div>
         </div>
-        <div>
+        <div className="relative"> 
           <img src={gate3} />
-          <p className="legend">Smart gate</p>
+          {/* <p className="legend">Smart gate</p> */}
+          <div className="absolute top-24 text-center flex items-center justify-center">
+          <h2 className=" text-xl glow text-center pl-10">Contact Us On: Tel: 0780682640</h2>
+            </div>
         </div>
       </Carousel>
      </div>
