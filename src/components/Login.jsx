@@ -16,11 +16,13 @@ const Login = () => {
   const [error, setError] = useState(null);
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
+  const [clicked, setClicked] = useState(false)
 
   const login = async(e)=>{
    e.preventDefault();
    
    if(email && password){
+     setClicked(true)
     setError(null);
       let res=  await axiosInstance.post("/customers/admins/login", {
         username: "",
@@ -29,6 +31,7 @@ const Login = () => {
     });
 
     setError(res.data[0]);
+    setClicked(false)
 
     if(!res.data[0]){
         return window.location = "/customers"
@@ -51,8 +54,9 @@ const Login = () => {
             </div>
             <div className="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
               <div className="w-full">
-                <div className="flex justify-center">
-                  <svg
+
+     <div className="flex justify-center">
+              <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="w-20 h-20 text-blue-600 cursor-pointer"
                     fill="none"
@@ -70,6 +74,7 @@ const Login = () => {
                     />
                   </svg>
                 </div>
+
                 <h1 className="mb-4 text-2xl font-bold text-center text-gray-700">
                   Sign In
                 </h1>
@@ -108,13 +113,31 @@ const Login = () => {
                   />
                 </div>
                 
-                <button
+                {
+                  clicked?
+<button
+                type="button"
+                  className="block flex items-center justify-center  w-full px-4 py-3 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue"
+                  href="#"
+                >
+      <div className="mr-3">
+      <span class="flex justify-center items-center space-x-2">
+  <span class="spinner-border animate-spin w-8 h-8 border-4 rounded-full text-white" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </span>
+</span>
+      </div>
+                  Signing In...
+                </button>
+                  :
+                  <button
                 type="submit"
-                  className="block w-full px-4 py-3 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue"
+                  className="block flex items-center justify-center  w-full px-4 py-3 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue"
                   href="#"
                 >
                   Sign In
                 </button>
+                }
        </form>
 
                 <div className="mt-4 text-center">
